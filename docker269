@@ -1,0 +1,252 @@
+
+FROM jupyter/scipy-notebook
+#:ad3574d3c5c7
+
+USER root 
+
+RUN apt update \
+    && apt-get install -y software-properties-common \ 
+    #&& add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable\
+    && add-apt-repository -y ppa:ubuntugis/ppa \
+    && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+    && apt-get update
+
+#RUN apt update \
+#    && apt-get install -y software-properties-common \ 
+#    && add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable\
+#    && add-apt-repository -y ppa:ubuntu-toolchain-r/test
+
+RUN apt-get update && apt-get install --fix-missing -y --no-install-recommends \
+  software-properties-common \ 
+  build-essential \ 
+  git \ 
+  subversion \
+  wget \
+  bash-completion \
+  netcat \
+  iputils-ping \
+  nano \
+  zip \
+  cmake \
+  libfftw3-3\
+  libfftw3-dev\ 
+  #openssh-client \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
+
+RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c -s)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | apt-key add -
+
+RUN apt-get update && apt-get install -y postgresql-client-12 postgresql-common postgresql-12 postgresql-12-postgis-3  netcat postgresql-12-ogr-fdw postgresql-12-postgis-3-scripts postgresql-12-cron postgresql-plpython3-12
+
+USER jovyan
+
+RUN conda install -y -c default\
+    python=3.7\
+    pandas\
+    qgis\
+    postgis\
+    postgresql\
+    gdal\
+    basemap \
+    geopandas \
+    markdown2\
+    osmnx\
+    rasterio\
+    scikit-image\
+ && conda clean --all -y
+
+# conda env
+#shapely=1.6.4.post2
+RUN conda install -y -c default holoviews geoviews datashader panel fiona shapely rasterio paramiko ipywidgets pyproj ipython numpy xarray matplotlib geopandas seaborn netCDF4 requests && \
+    conda install -y -c conda-forge ipyleaflet jupyterthemes hs_restclient tqdm statsmodels mapclassify mplleaflet basemap-data-hires earthpy networkit cmocean psycopg2 fastparquet dask folium sphinx xlsxwriter html5lib lxml s3fs scikit-learn && \
+    conda install -y -c default owslib sqlalchemy cartopy pysal pyshp geojson cenpy pykdtree && \
+    conda clean --all -y
+
+# Urban computation, simulation and analytics
+RUN #conda install -y -c udst pandana=0.4.4 urbanaccess=0.2.0 && \
+    conda install -y -c plotly plotly && \
+    conda install -y -c esri arcgis && \
+    conda install -y -c conda-forge geoplot && \
+    conda clean --all -y
+
+#RUN conda install -y -c conda-forge pyspark=2.4.4 && \ #geoplot
+#    conda install -y -c anaconda openjdk=8.0.152 && \
+#    conda clean --all -y
+
+RUN pip install --quiet  pykrige lidar ortools mesa pyarrow PuLP partridge #peartree urbansim
+
+#geospatial big data
+#pyspark==2.4.4
+RUN pip install pyhdfs==0.3.1 #geopyspark==0.4.3 geospark==1.3.1 pyrasterframes==0.8.5
+RUN pip install hdfs3==0.3.1 mrjob==0.7.1
+#Fix bugs
+#RUN pip install osmnx==0.11 mip==1.7.2
+
+USER jovyan
+
+RUN conda init
+RUN conda config --set auto_activate_base false
+
+ENV GDAL_DATA=/opt/conda/share/gdal
+ENV PROJ_LIB=/opt/conda/share/proj
+
+
+USER root
+
+### TauDEM installation adapted from 
+### https://github.com/hydroshare/hydroshare-jupyterhub/blob/develop/docker/docker-base/Dockerfile
+
+
+RUN apt-get update && apt-get install --fix-missing -y --no-install-recommends \
+  software-properties-common \
+  gfortran \
+  autoconf \
+  automake \
+  libtool \
+  build-essential \
+  wget \
+  bash-completion \
+  netcat \
+  iputils-ping \
+  nano \
+  screen \
+  openssh-client \
+  libgdal-dev \
+  cmake \
+  zip \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
+
+RUN git clone https://github.com/cybergis/find_inlets.git /tmp/find_inlets \
+    && cd /tmp/find_inlets/src \
+    && g++ find_inlets.cpp -I/usr/include/gdal -L/usr/lib -lgdal -o find_inlets_mr \
+    && cp ./find_inlets_mr /usr/bin \
+    && rm -rf /tmp/find_inlets
+
+
+RUN git clone -b v3.3.1 https://github.com/pmodels/mpich.git /tmp/mpich \
+    && cd /tmp/mpich \
+    && git submodule update --init \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr \
+    && make -j8 \
+    && make -j8 install \
+    && rm -rf /tmp/mpich
+
+RUN git clone --branch Develop https://github.com/dtarb/TauDEM.git /home/jovyan/libs/TauDEM \
+    && cd /home/jovyan/libs/TauDEM \
+    && git checkout bceeef2f6a399aa23749a7c7cae7fed521ea910f \
+    && cd /home/jovyan/libs/TauDEM/src \
+    && sed -i 's#\.\.#/usr/local/bin#g' makefile \
+    && make \
+    && rm -rf /home/jovyan/libs/TauDEM
+
+
+### Complie SUMMA
+# install only the packages that are needed
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    software-properties-common \
+    ca-certificates \
+    git \
+    make \
+    libnetcdff-dev \
+    liblapack-dev \
+    vim
+
+# install gfortran-6
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gfortran-6 \
+    && apt-get clean
+
+# download summa source code
+ENV F_MASTER /tmp/summa
+ENV FC gfortran
+ENV FC_EXE gfortran
+ENV FC_ENV gfortran-6-docker
+RUN git clone -b sopron_2018 https://github.com/NCAR/summa.git /tmp/summa \
+    && cd /tmp/summa \
+    && git checkout f18270c2ce5f2b5004c2b3e1799bd0969612bb68 \
+    && make -C build/ -f Makefile \
+    && cp /tmp/summa/bin/summa.exe /usr/bin \
+    && chmod +x /usr/bin/summa.exe \
+    && cd /usr/bin \
+    && ./summa.exe --version \
+    && rm -rf /tmp/summa
+
+### END SUMMA
+
+USER jovyan
+
+
+# Install hydro-py3 env (Drew)
+RUN /opt/conda/bin/conda create -y -n hydro-py3 -c default python=3.7 holoviews geoviews datashader panel fiona shapely rasterio \
+    paramiko ipywidgets pyproj ipython numpy xarray matplotlib geopandas seaborn netCDF4 requests distributed bokeh &&\
+    /opt/conda/bin/conda install -y -n hydro-py3 -c conda-forge ipyleaflet jupyterthemes hs_restclient dask-jobqueue && \
+    /opt/conda/bin/conda clean --all -y
+
+# kernel
+RUN /opt/conda/envs/hydro-py3/bin/python -m ipykernel install \
+    --user \
+    --name "hydro-py3" \
+    --display-name "Hydro-Python3"
+# End Hydro Py3 Kernel
+
+#RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/cybergis/Jupyter-xsede.git@hydroshare
+#RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/uva-hydroinformatics/pysumma.git@develop
+
+RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/cybergis/Jupyter-xsede.git@1cb26007ff303b028dcaf33edf8a5821cae618c3
+RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/UW-Hydro/pysumma.git@28e09a77da5233e9e9d39bfb155f479b38f57f8e
+
+
+# fix some versions that got broken by pysumma installation
+RUN /opt/conda/bin/conda install -y -n hydro-py3 -c default bokeh distributed gdal=2.4.2
+
+#Install nbgitpuller
+RUN pip install nbgitpuller
+RUN jupyter serverextension enable nbgitpuller --sys-prefix
+
+ENV GDAL_DATA=/opt/conda/share/gdal
+ENV PROJ_LIB=/opt/conda/share/proj
+
+#RUN cp /opt/conda/envs/hydro-py3/share/proj/proj.db /opt/conda/share/proj/
+
+USER jovyan
+
+#postgresql psycopg2
+RUN conda install -y -c conda-forge sqlalchemy-utils ipython-sql pgspecial  && \  
+    conda clean --all -y
+
+RUN pip install sql_magic h3 python-igraph snap-stanford graphistry
+
+RUN conda install -y -c conda-forge graph-tool && \
+    conda install -y -c pkgw/label/superseded gtk3 && \
+    conda install -y -c conda-forge pygobject && \
+    conda clean --all -y
+
+# switch USER
+USER postgres
+#USER root
+ 
+# Adjust PostgreSQL configuration so that remote connections to the
+# database are possible.
+RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/12/main/pg_hba.conf
+ 
+# And add ``listen_addresses`` to ``/etc/postgresql/12/main/postgresql.conf``
+RUN echo "listen_addresses='*'" >> /etc/postgresql/12/main/postgresql.conf
+ 
+# Expose the PostgreSQL port
+EXPOSE 5432
+
+RUN    /etc/init.d/postgresql start #&amp;&amp;
+
+# Add VOLUMEs to allow backup of config, logs and databases
+#VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]#, "/home/osmdata/gpkg"]
+ 
+# Set the default command to run when starting the container
+#CMD ["/usr/lib/postgresql/12/bin/postgres", "-D", "/var/lib/postgresql/12/main", "-c", "config_file=/etc/postgresql/12/main/postgresql.conf"]
+
+USER jovyan
+
