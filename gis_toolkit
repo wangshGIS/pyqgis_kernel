@@ -3,6 +3,10 @@
 
 Successfully installed osmnet-0.1.5 pandana-0.4.4 tables-3.6.1 urbanaccess-0.2.0
 
+https://github.com/cantzakas/postgis-demo
+https://github.com/cantzakas/postgis-demo/blob/master/GEO-POSTGIS-SQL.md
+
+https://github.com/dhamaniasad/awesome-postgres
 
 sys.path.append('/opt/conda/share/qgis/python/plugins/')
 sys.path.append('/opt/conda/share/qgis/python/')
