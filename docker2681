@@ -41,7 +41,7 @@ RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c 
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | apt-key add -
 
 #RUN apt-get update && apt-get install -y postgresql-client-12 postgresql-common postgresql-12 postgresql-12-postgis-3  netcat postgresql-12-ogr-fdw postgresql-12-postgis-3-scripts postgresql-12-cron postgresql-plpython3-12
-RUN apt-get update && apt-get install -y postgresql-client-11 postgresql-common postgresql-11 postgresql-12-postgis-2.5  netcat postgresql-11-ogr-fdw postgresql-11-postgis-2.5-scripts postgresql-11-cron postgresql-plpython3-11
+RUN apt-get update && apt-get install -y postgresql-client-11 postgresql-common postgresql-11 postgresql-11-postgis-2.5  netcat postgresql-11-ogr-fdw postgresql-11-postgis-2.5-scripts postgresql-11-cron postgresql-plpython3-11
 
     
 USER jovyan
