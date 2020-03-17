@@ -1,4 +1,7 @@
 
+sys.path.append('/opt/conda/share/qgis/python/plugins/')
+sys.path.append('/opt/conda/share/qgis/python/')
+
 searchTerm = "buffer"
 for alg in QgsApplication.processingRegistry().algorithms():
     if searchTerm in alg.id():
