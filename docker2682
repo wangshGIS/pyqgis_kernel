@@ -1,0 +1,129 @@
+
+FROM jupyter/scipy-notebook:ad3574d3c5c7
+
+USER root 
+
+
+RUN apt update \
+    && apt-get install -y software-properties-common \ 
+    #&& add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable\
+    && add-apt-repository -y ppa:ubuntugis/ppa \
+    && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+    && apt-get update
+
+
+#RUN apt update \
+#    && apt-get install -y software-properties-common \ 
+#    && add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable\
+#    && add-apt-repository -y ppa:ubuntu-toolchain-r/test
+
+RUN apt-get update && apt-get install --fix-missing -y --no-install-recommends \
+  software-properties-common \ 
+  build-essential \ 
+  git \ 
+  subversion \
+  wget \
+  bash-completion \
+  netcat \
+  iputils-ping \
+  nano \
+  zip \
+  cmake \
+  libfftw3-3\
+  libfftw3-dev\ 
+  #openssh-client \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
+
+
+
+RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c -s)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | apt-key add -
+
+#RUN apt-get update && apt-get install -y postgresql-client-12 postgresql-common postgresql-12 postgresql-12-postgis-3  netcat postgresql-12-ogr-fdw postgresql-12-postgis-3-scripts postgresql-12-cron postgresql-plpython3-12
+RUN apt-get update && apt-get install -y postgresql-client-11 postgresql-common postgresql-11 postgresql-11-postgis-2.5  netcat postgresql-11-ogr-fdw postgresql-11-postgis-2.5-scripts postgresql-11-cron postgresql-plpython3-11
+
+    
+USER jovyan
+
+RUN conda install -y -c default\
+    pandas=0.25.3 \
+    gdal=2.4.1 \
+    basemap=1.2.1 \
+    geopandas=0.6.2 \
+    markdown2=2.3.6 \
+    osmnx=0.11 \
+    rasterio=1.0.25 \
+    scikit-image=0.16.2 \
+ && conda clean --all -y
+
+# conda env
+#shapely=1.6.4.post2
+RUN conda install -y -c default holoviews=1.12.7 geoviews=1.6.6 datashader=0.9.0 panel=0.6.4 fiona=1.8.6 shapely rasterio=1.0.25 paramiko ipywidgets pyproj=1.9.6 ipython=7.10.1 numpy=1.17.3 xarray=0.14.1 matplotlib=3.1.2 geopandas=0.6.2 seaborn=0.9.0 netCDF4=1.5.1.2 requests=2.22.0 && \
+    conda install -y -c conda-forge ipyleaflet=0.11.6 jupyterthemes=0.20.0 hs_restclient=1.3.5 tqdm=4.40.0 statsmodels=0.10.2 mapclassify=2.1.1 mplleaflet=0.0.5 basemap-data-hires=1.2.1 earthpy=0.8.0 networkit=6.0 cmocean=2.0 psycopg2=2.8.4 fastparquet=0.3.2 dask=2.2.0 folium=0.10.1 sphinx=2.2.2 xlsxwriter=1.2.6 html5lib=1.0.1 lxml=4.4.1 s3fs=0.4.0 scikit-learn=0.21.3 && \
+    conda install -y -c default owslib=0.19.0 sqlalchemy=1.3.1 cartopy=0.17.0 pysal=2.1.0 pyshp=2.1.0 geojson=2.5.0 cenpy=1.0.0.post2 pykdtree=1.3.1 && \
+    conda clean --all -y
+
+# Urban computation, simulation and analytics
+RUN conda install -y -c udst pandana=0.4.4 urbanaccess=0.2.0 && \
+    conda install -y -c plotly plotly=4.5.4 && \
+    conda install -y -c esri arcgis=1.8.0 && \
+    conda clean --all -y
+
+RUN conda install -y -c conda-forge pyspark=2.4.4 geoplot=0.4.0 && \
+    conda install -y -c anaconda openjdk=8.0.152 && \
+    conda clean --all -y
+
+RUN pip install --quiet urbansim==3.1.1 pykrige==1.4.1 lidar==0.4.0 ortools==7.3.7083 mesa==0.8.6 pyarrow==0.15.1 PuLP==2.0 partridge==1.1.1 peartree==0.6.2
+
+#geospatial big data
+#pyspark==2.4.4
+RUN pip install pyhdfs==0.3.1 geopyspark==0.4.3 geospark==1.3.1 pyrasterframes==0.8.5
+RUN pip install hdfs3==0.3.1 mrjob==0.7.1
+#Fix bugs
+RUN pip install osmnx==0.11 mip==1.7.2
+
+USER jovyan
+
+RUN conda init
+RUN conda config --set auto_activate_base false
+
+ENV GDAL_DATA=/opt/conda/share/gdal
+ENV PROJ_LIB=/opt/conda/share/proj
+
+
+#Install nbgitpuller
+RUN pip install nbgitpuller
+RUN jupyter serverextension enable nbgitpuller --sys-prefix
+
+RUN pip install h3==3.4.3 python-igraph==0.8.0 snap-stanford==5.0.0 graphistry==0.10.4
+
+RUN conda install -y -c conda-forge graph-tool=2.29 && \
+    conda install -y -c pkgw/label/superseded gtk3 && \
+    conda install -y -c conda-forge pygobject=3.30.5 && \
+    conda clean --all -y
+
+# switch USER
+USER postgres
+#USER root
+ 
+# Adjust PostgreSQL configuration so that remote connections to the
+# database are possible.
+RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf
+ 
+# And add ``listen_addresses`` to ``/etc/postgresql/11/main/postgresql.conf``
+RUN echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf
+ 
+# Expose the PostgreSQL port
+EXPOSE 5432
+
+RUN    /etc/init.d/postgresql start #&amp;&amp;
+
+# Add VOLUMEs to allow backup of config, logs and databases
+#VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]#, "/home/osmdata/gpkg"]
+ 
+# Set the default command to run when starting the container
+#CMD ["/usr/lib/postgresql/11/bin/postgres", "-D", "/var/lib/postgresql/11/main", "-c", "config_file=/etc/postgresql/11/main/postgresql.conf"]
+
+
+USER jovyan
