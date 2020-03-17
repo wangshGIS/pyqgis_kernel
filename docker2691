@@ -109,10 +109,10 @@ RUN conda install -y -c conda-forge sqlalchemy-utils ipython-sql pgspecial  && \
 
 RUN pip install sql_magic h3 python-igraph snap-stanford graphistry
 
-RUN conda install -y -c conda-forge graph-tool && \
-    conda install -y -c pkgw/label/superseded gtk3 && \
-    conda install -y -c conda-forge pygobject && \
-    conda clean --all -y
+#RUN conda install -y -c conda-forge graph-tool && \
+#    conda install -y -c pkgw/label/superseded gtk3 && \
+#    conda install -y -c conda-forge pygobject && \
+#    conda clean --all -y
 
 # switch USER
 USER postgres
