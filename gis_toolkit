@@ -1,6 +1,8 @@
 
 !pip install urbanaccess pandana
 
+cp -r lib/libproj.so.1* /opt/conda/lib
+
 Successfully installed osmnet-0.1.5 pandana-0.4.4 tables-3.6.1 urbanaccess-0.2.0
 
 https://github.com/cantzakas/postgis-demo
