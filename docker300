@@ -218,6 +218,10 @@ RUN conda install -y -c conda-forge graph-tool=2.29 && \
     conda install -y -c conda-forge pygobject=3.30.5 && \
     conda clean --all -y
 
+RUN conda install -y -c conda-forge ipython-sql=0.3.9 postgresql pgspecial psycopg2 && \
+    conda clean --all -y
+
+#install postgis-3.0.0
 RUN wget https://anaconda.org/conda-forge/postgis/3.0.0/download/linux-64/postgis-3.0.0-hc361d21_2.tar.bz2 \#
 #/tmp/postgis \
 #    && cd /tmp/postgis \
