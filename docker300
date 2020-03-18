@@ -227,13 +227,14 @@ RUN wget https://anaconda.org/conda-forge/postgis/3.0.0/download/linux-64/postgi
 
 RUN wget https://download.osgeo.org/proj/proj-6.0.0.zip \
     && unzip proj-6.0.0.zip \
-    && cd /proj-6.0.0 \
+    && cd proj-6.0.0/ \
     && mkdir build \
-    && cd /build \
+    && cd build/ \
     && cmake .. \
     && make \
     && cp -r lib/libproj.so.1* /opt/conda/lib \
     && rm -rf /tmp/postgis \
+    && cd ../../ \
     && rm -rf proj-6.0.0 \
     && rm proj-6.0.0.zip
 
