@@ -228,11 +228,12 @@ RUN wget https://anaconda.org/conda-forge/postgis/3.0.0/download/linux-64/postgi
     && cd /build \
     && cmake .. \
     && make \
-    && cp -r /lib/libproj.so.1* /opt/conda/lib \
+    && cp -r lib/libproj.so.1* /opt/conda/lib \
     #&& g++ find_inlets.cpp -I/usr/include/gdal -L/usr/lib -lgdal -o find_inlets_mr \
     #&& cp ./find_inlets_mr /usr/bin \
     && rm -rf /tmp/postgis
 
+#set pgdata and start postgresql server
 ENV PGDATA=/opt/conda/pgdata
 
 RUN pg_ctl initdb
