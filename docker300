@@ -35,8 +35,6 @@ RUN apt-get update && apt-get install --fix-missing -y --no-install-recommends \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/
 
-
-
 #RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c -s)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
 #RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | apt-key add -
 
@@ -81,7 +79,7 @@ RUN pip install --quiet urbansim==3.1.1 pykrige==1.4.1 lidar==0.4.0 ortools==7.3
 RUN pip install pyhdfs==0.3.1 geopyspark==0.4.3 geospark==1.3.1 pyrasterframes==0.8.5
 RUN pip install hdfs3==0.3.1 mrjob==0.7.1
 #Fix bugs
-RUN pip install osmnx==0.11 mip==1.7.2
+RUN pip install mip==1.7.2 #osmnx==0.11 
 
 USER jovyan
 
@@ -220,21 +218,39 @@ RUN conda install -y -c conda-forge graph-tool=2.29 && \
     conda install -y -c conda-forge pygobject=3.30.5 && \
     conda clean --all -y
 
+RUN wget https://anaconda.org/conda-forge/postgis/3.0.0/download/linux-64/postgis-3.0.0-hc361d21_2.tar.bz2 /tmp/postgis \
+    && cd /tmp/postgis \
+    && conda install --offline postgis-3.0.0-hc361d21_2.tar.bz2 \
+    && wget https://download.osgeo.org/proj/proj-6.0.0.zip \
+    && unzip proj-6.0.0.zip \
+    && cd /proj-6.0.0 \
+    && mkdir build \
+    && cd /build \
+    && cmake .. \
+    && make \
+    && cp -r /lib/libproj.so.1* /opt/conda/lib \
+    #&& g++ find_inlets.cpp -I/usr/include/gdal -L/usr/lib -lgdal -o find_inlets_mr \
+    #&& cp ./find_inlets_mr /usr/bin \
+    && rm -rf /tmp/postgis
+
+RUN pg_ctl initdb
+RUN pg_ctl start
+
 # switch USER
 USER postgres
 #USER root
- 
+
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible.
-RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf
+#RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf
  
 # And add ``listen_addresses`` to ``/etc/postgresql/11/main/postgresql.conf``
-RUN echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf
+#RUN echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf
  
 # Expose the PostgreSQL port
-EXPOSE 5432
+#EXPOSE 5432
 
-RUN    /etc/init.d/postgresql start #&amp;&amp;
+#RUN    /etc/init.d/postgresql start #&amp;&amp;
 
 # Add VOLUMEs to allow backup of config, logs and databases
 #VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]#, "/home/osmdata/gpkg"]
