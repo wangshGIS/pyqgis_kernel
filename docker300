@@ -223,8 +223,6 @@ RUN conda install -y -c conda-forge ipython-sql=0.3.9 postgresql pgspecial psyco
 
 #install postgis-3.0.0
 RUN wget https://anaconda.org/conda-forge/postgis/3.0.0/download/linux-64/postgis-3.0.0-hc361d21_2.tar.bz2 \
-#/tmp/postgis \
-#    && cd /tmp/postgis \
     && conda install --offline postgis-3.0.0-hc361d21_2.tar.bz2
 
 RUN wget https://download.osgeo.org/proj/proj-6.0.0.zip \
