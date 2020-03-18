@@ -233,6 +233,8 @@ RUN wget https://anaconda.org/conda-forge/postgis/3.0.0/download/linux-64/postgi
     #&& cp ./find_inlets_mr /usr/bin \
     && rm -rf /tmp/postgis
 
+ENV PGDATA=/opt/conda/pgdata
+
 RUN pg_ctl initdb
 RUN pg_ctl start
 
