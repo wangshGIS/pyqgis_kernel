@@ -1,4 +1,8 @@
 
+from hdfs3 import HDFileSystem
+
+hdfs = HDFileSystem(host='128.174.25.123', port=9870)
+
 sudo apt-get install -y libprotobuf8
 
 echo "deb https://dl.bintray.com/wangzw/deb trusty contrib" | sudo tee /etc/apt/sources.list.d/bintray-wangzw-deb.list
