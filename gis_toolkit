@@ -4,6 +4,9 @@ https://gist.github.com/evansde77/b7b629431bc7a4d7e65d6d7658fe240b
 
 https://github.com/dask/hdfs3/blob/master/hdfs3/lib.py
 
+FlexPS is a minimum Parameter-Server based system, supporting efficient worker-server interaction using various consistency model (BSP/SSP/ASP).
+https://github.com/Yuzhen11/flexps
+
 https://github.com/visierl/pivotalrd-libhdfs3
 
 https://github.com/Yuzhen11/flexps/blob/master/Dockerfile
