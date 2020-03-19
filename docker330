@@ -1,5 +1,8 @@
 
 FROM jupyter/scipy-notebook:ad3574d3c5c7
+#shaohua@illinois.edu
+
+#This is for cybergisx lib, hydro share, and postgis kernel
 
 USER root 
 
