@@ -121,11 +121,7 @@ RUN git clone -b sopron_2018 https://github.com/NCAR/summa.git /tmp/summa \
 
 ### END SUMMA
 
-RUN "deb https://dl.bintray.com/wangzw/deb trusty contrib" | sudo tee /etc/apt/sources.list.d/bintray-wangzw-deb.list
-RUN apt-get install -y apt-transport-https
-RUN apt-get update
-#RUN apt-get install libhdfs3 libhdfs3-dev
-
+#install postgresql and postgis
 RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c -s)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | apt-key add -
 
@@ -171,8 +167,10 @@ RUN pip install --quiet  pykrige lidar ortools mesa pyarrow PuLP partridge #pear
 
 #geospatial big data
 #pyspark==2.4.4
-RUN pip install pyhdfs #geopyspark==0.4.3 geospark==1.3.1 pyrasterframes==0.8.5
+RUN conda install -y -c conda-forge libhdfs3 
+#RUN pip install pyhdfs #geopyspark==0.4.3 geospark==1.3.1 pyrasterframes==0.8.5
 RUN pip install hdfs3 pyhdfs==0.3.1 snakebite==2.11.0 pywebhdfs==0.4.1 mrjob==0.7.1 #hdfs
+
 #Fix bugs
 RUN pip install mip #osmnx==0.11
 
@@ -185,9 +183,7 @@ RUN conda config --set auto_activate_base false
 ENV GDAL_DATA=/usr/share/gdal
 ENV PROJ_LIB=/opt/conda/share/proj
 
-
 USER jovyan
-
 
 # Install hydro-py3 env (Drew)
 RUN /opt/conda/bin/conda create -y -n hydro-py3 -c default python=3.7 holoviews geoviews datashader panel fiona shapely rasterio \
@@ -205,6 +201,7 @@ RUN /opt/conda/envs/hydro-py3/bin/python -m ipykernel install \
 #RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/cybergis/Jupyter-xsede.git@hydroshare
 #RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/uva-hydroinformatics/pysumma.git@develop
 
+#With new hyhro-share functions
 RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/cybergis/Jupyter-xsede.git@1cb26007ff303b028dcaf33edf8a5821cae618c3
 RUN /opt/conda/envs/hydro-py3/bin/python -m pip install --quiet git+https://github.com/UW-Hydro/pysumma.git@28e09a77da5233e9e9d39bfb155f479b38f57f8e
 
@@ -236,16 +233,7 @@ RUN pip install sql_magic h3 python-igraph snap-stanford graphistry
 #    conda install -y -c conda-forge pygobject && \
 #    conda clean --all -y
 
-#USER root
-#RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c -s)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
-#RUN sh -c "echo \"deb https://dl.bintray.com/wangzw/deb trusty contrib\" | tee /etc/apt/sources.list.d/bintray-wangzw-deb.list"
-#RUN apt-get install -y apt-transport-https \
-#    && apt-get update \
-#    && apt-get install https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb # libhdfs3 libhdfs3-dev
-#RUN wget https://raw.githubusercontent.com/wangshGIS/pyqgis_kernel/master/libhdfs3_2.2.31-1_amd64.deb #https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb
-#RUN apt-get install ./libhdfs3_2.2.31-1_amd64.deb
-
-RUN conda install -y -c conda-forge libhdfs3
+#RUN conda install -y -c conda-forge libhdfs3
 
 # switch USER
 USER postgres
