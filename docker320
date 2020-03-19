@@ -214,8 +214,10 @@ RUN /opt/conda/bin/conda install -y -n hydro-py3 -c default bokeh distributed gd
 RUN pip install nbgitpuller
 RUN jupyter serverextension enable nbgitpuller --sys-prefix
 
-ENV GDAL_DATA=/opt/conda/share/gdal
+#ENV GDAL_DATA=/opt/conda/share/gdal
+ENV GDAL_DATA=/usr/share/gdal
 ENV PROJ_LIB=/opt/conda/share/proj
+
 
 #RUN cp /opt/conda/envs/hydro-py3/share/proj/proj.db /opt/conda/share/proj/
 
