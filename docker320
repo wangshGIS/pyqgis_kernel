@@ -238,10 +238,12 @@ RUN pip install sql_magic h3 python-igraph snap-stanford graphistry
 
 USER root
 #RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c -s)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
-RUN sh -c "echo \"deb https://dl.bintray.com/wangzw/deb trusty contrib\" | tee /etc/apt/sources.list.d/bintray-wangzw-deb.list"
-RUN apt-get install -y apt-transport-https \
-    && apt-get update \
-    && apt-get install https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb # libhdfs3 libhdfs3-dev
+#RUN sh -c "echo \"deb https://dl.bintray.com/wangzw/deb trusty contrib\" | tee /etc/apt/sources.list.d/bintray-wangzw-deb.list"
+#RUN apt-get install -y apt-transport-https \
+#    && apt-get update \
+#    && apt-get install https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb # libhdfs3 libhdfs3-dev
+RUN wget https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb
+RUN apt-get install ./libhdfs3_2.2.31-1_amd64.deb
 
 # switch USER
 USER postgres
