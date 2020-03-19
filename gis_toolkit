@@ -1,4 +1,8 @@
 
+Is the server running locally and accepting
+	connections on Unix domain socket "/var/run/postgresql/.s.PGSQL.5432"?
+    
+    
 https://qiita.com/ozo360/items/9cb8f00ada6317860f08
 
 http://www.finds.jp/docs/pgisman/3.0.0/postgis-ja.html#PostGIS_Aggregate_Functions
