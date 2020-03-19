@@ -242,7 +242,7 @@ USER root
 #RUN apt-get install -y apt-transport-https \
 #    && apt-get update \
 #    && apt-get install https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb # libhdfs3 libhdfs3-dev
-RUN wget https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb
+RUN wget https://raw.githubusercontent.com/wangshGIS/pyqgis_kernel/master/libhdfs3_2.2.31-1_amd64.deb #https://dl.bintray.com/wangzw/deb/dists/trusty/contrib/binary-amd64/:libhdfs3_2.2.31-1_amd64.deb
 RUN apt-get install ./libhdfs3_2.2.31-1_amd64.deb
 
 # switch USER
