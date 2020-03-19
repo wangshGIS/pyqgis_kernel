@@ -1,3 +1,15 @@
+https://github.com/Yuzhen11/flexps/blob/master/Dockerfile
+
+https://gist.github.com/evansde77/b7b629431bc7a4d7e65d6d7658fe240b
+
+https://github.com/dask/hdfs3/blob/master/hdfs3/lib.py
+
+https://github.com/visierl/pivotalrd-libhdfs3
+
+https://github.com/Yuzhen11/flexps/blob/master/Dockerfile
+
+https://anaconda.org/conda-forge/libhdfs3
+
 
 sudo apt-get install -y libxml2-dev libprotobuf-dev libgsasl7-dev libgtest-dev libgoogle-perftools-dev \
     libzmq3-dev \
