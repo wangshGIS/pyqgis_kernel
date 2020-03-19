@@ -101,6 +101,8 @@ EXPOSE 5432
 
 RUN    /etc/init.d/postgresql start #&amp;&amp;
 
+RUN ln -s /tmp/.s.PGSQL.5432 /var/run/postgresql/.s.PGSQL.5432
+
 # Add VOLUMEs to allow backup of config, logs and databases
 #VOLUME  ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]#, "/home/osmdata/gpkg"]
  
