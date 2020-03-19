@@ -235,7 +235,9 @@ RUN conda install -y -c conda-forge graph-tool=2.29 && \
     conda clean --all -y
 
 #postgresql pgspecial psycopg2
-RUN conda install -y -c conda-forge libhdfs3 ipython-sql=0.3.9 && \
+RUN pip install ipython-sql=0.3.9
+
+RUN conda install -y -c conda-forge libhdfs3  && \
     conda clean --all -y
 
 #install hadoop client
