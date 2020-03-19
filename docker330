@@ -217,6 +217,8 @@ RUN /opt/conda/envs/postgis-py3/bin/python -m ipykernel install \
     --display-name "PosGIS-Python3"
 # End postgis Py3 Kernel
 
+RUN /opt/conda/envs/postgis-py3/bin/python -m pip install --quiet pyhdfs==0.3.1 snakebite==2.11.0 pywebhdfs==0.4.1 mrjob==0.7.1 hdfs==2.5.8
+
 
 ENV GDAL_DATA=/opt/conda/share/gdal
 ENV PROJ_LIB=/opt/conda/share/proj
