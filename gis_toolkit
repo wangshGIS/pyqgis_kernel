@@ -1,4 +1,7 @@
 
+https://qiita.com/ozo360/items/9cb8f00ada6317860f08
+
+
 !pip install urbanaccess pandana
 
 cp -r lib/libproj.so.1* /opt/conda/lib
