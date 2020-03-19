@@ -124,7 +124,7 @@ RUN git clone -b sopron_2018 https://github.com/NCAR/summa.git /tmp/summa \
 RUN "deb https://dl.bintray.com/wangzw/deb trusty contrib" | sudo tee /etc/apt/sources.list.d/bintray-wangzw-deb.list
 RUN apt-get install -y apt-transport-https
 RUN apt-get update
-RUN apt-get install libhdfs3 libhdfs3-dev
+#RUN apt-get install libhdfs3 libhdfs3-dev
 
 RUN sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt/ $(lsb_release -c -s)-pgdg main\" > /etc/apt/sources.list.d/pgdg.list"
 RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc -O- | apt-key add -
