@@ -209,7 +209,7 @@ USER jovyan
 RUN /opt/conda/bin/conda create -y -n hydro-py3 -c default python=3.7 holoviews geoviews datashader panel fiona shapely rasterio \
     paramiko ipywidgets pyproj ipython numpy xarray matplotlib geopandas seaborn netCDF4 requests distributed bokeh &&\
     /opt/conda/bin/conda install -y -n hydro-py3 -c conda-forge ipyleaflet jupyterthemes hs_restclient dask-jobqueue && \
-    /opt/conda/bin/conda install -y -n hydro-py3 -c postgis postgresql && \
+    /opt/conda/bin/conda install -y -n hydro-py3 -c default postgis postgresql && \
     /opt/conda/bin/conda clean --all -y
 
 # kernel
