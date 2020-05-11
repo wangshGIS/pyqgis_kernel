@@ -177,7 +177,7 @@ RUN #conda install -y -c udst pandana=0.4.4 urbanaccess=0.2.0 && \
     conda install -y -c conda-forge geoplot && \
     conda clean --all -y
 
-RUN conda install -y -c conda-forge pyspark=2.4.4 && \ #geoplot
+RUN conda install -y -c conda-forge pyspark=2.4.4 && \
     conda install -y -c anaconda openjdk=8.0.152 && \
     conda clean --all -y
 
