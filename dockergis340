@@ -191,7 +191,7 @@ RUN apt update \
     && add-apt-repository ppa:openjdk-r/ppa \ 
     && apt-get update
 RUN apt-get update
-RUN apt install openjdk-8-jre openjdk-8-jdk
+RUN apt install --fix-missing -y --no-install-recommends openjdk-8-jre openjdk-8-jdk
 RUN update-alternatives --config java
 RUN update-alternatives --config javac
 
