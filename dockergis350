@@ -332,6 +332,7 @@ RUN apt-get update && \
     libgdal-dev python-gdal \
     libsqlite3-dev \
     libcgal-dev \
-    libgmp-dev libgmp3-dev
+    libgmp-dev libgmp3-dev \
+    
     
 USER jovyan
