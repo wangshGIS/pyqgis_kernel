@@ -310,10 +310,12 @@ RUN add-apt-repository ppa:ubuntugis/ppa -y && \
     grass --text -c EPSG:3857 /tmp/grassdata/newLocation2 --exec g.extension prefix=/usr extension=r.stream.basins && \
     grass --text -c EPSG:3857 /tmp/grassdata/newLocation3 --exec g.extension prefix=/usr extension=r.stream.snap
 
-#osm2pgrouting libboost-regex-dev && \
+#
 RUN apt-get update && \
     apt-get install --fix-missing -y libtbb-dev && \
-    libboost-all-dev && \
-    libboost-dev
+    libboost-all-dev \
+    libboost-dev \
+    osm2pgrouting \
+    libboost-regex-dev
     
 USER jovyan
