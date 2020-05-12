@@ -312,7 +312,7 @@ RUN add-apt-repository ppa:ubuntugis/ppa -y && \
 
 #
 RUN apt-get update && \
-    apt-get install --fix-missing -y libtbb-dev && \
+    apt-get install --fix-missing -y libtbb-dev \
     libboost-all-dev \
     libboost-dev \
     osm2pgrouting \
