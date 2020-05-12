@@ -311,7 +311,10 @@ RUN add-apt-repository ppa:ubuntugis/ppa -y && \
     grass --text -c EPSG:3857 /tmp/grassdata/newLocation3 --exec g.extension prefix=/usr extension=r.stream.snap
 
 RUN apt-get update && \
-    apt-get install --fix-missing -y libtbb-dev 
-    
+    apt-get install --fix-missing -y libtbb-dev && \
+    osm2pgrouting && \
+    libboost-regex-dev && \
+    libboost-all-dev && \
+    libboost-dev
     
 USER jovyan
