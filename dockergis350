@@ -333,6 +333,10 @@ RUN apt-get update && \
     libsqlite3-dev \
     libcgal-dev \
     libgmp-dev libgmp3-dev \
-    
+    libsqlite3-mod-spatialite libsqlite3-dev libspatialite-dev \
+    autoconf libtool pkg-config libczmq-dev libzmq5 \
+    libcurl4-openssl-dev zlib1g-dev jq libgeos-dev \
+    libgeos++-dev libprotobuf-dev protobuf-compiler \
+    libboost-all-dev liblua5.2-dev spatialite-bin unzip
     
 USER jovyan
