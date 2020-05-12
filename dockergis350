@@ -330,6 +330,8 @@ RUN apt-get update && \
     ttf-unifont ttf-dejavu ttf-dejavu-core ttf-dejavu-extra \
     git build-essential python-nose \
     libgdal-dev python-gdal \
-    libsqlite3-dev
+    libsqlite3-dev \
+    libcgal-dev \
+    libgmp-dev libgmp3-dev
     
 USER jovyan
