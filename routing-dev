@@ -1,4 +1,7 @@
 
+https://gist.github.com/systemed/be2d6bb242d2fa497b5d93dcafe85f0c
+
+
 https://github.com/Project-OSRM/osrm-backend
 
 git clone https://github.com/RoutingKit/RoutingKit.git
@@ -10,3 +13,47 @@ http://algo2.iti.kit.edu/routeplanning.php
 http://algo2.iti.kit.edu/english/batz.php
 
 https://github.com/GVeitBatz
+
+Routing algorithm implementations 
+
+(Dijkstra and plain A* are generally not included here as there are thousands of 
+implementations, though I've made an exception for rare Ruby and Crystal versions,
+and for Thor, Mapzen's enhanced A*. )
+
+A*                                      Ruby    https://github.com/georgian-se/shortest-path
+A*                                      Crystal https://github.com/petoem/a-star.cr
+A* (bidirectional with shortcuts)       C++     https://github.com/valhalla/valhalla
+NBA*                                    JS      https://github.com/anvaka/ngraph.path
+NBA*                                    Java    https://github.com/coderodde/GraphSearchPal
+NBA*                                    Java    https://github.com/coderodde/FunkyPathfinding
+NBA*                                    C++     https://github.com/vlarmet/cppRouting
+NBA* (Parallel)                         C++     https://github.com/janhsimon/PNBAStar
+NBA* (Parallel)                         Python  https://github.com/rizasif/heuristic-search-2d
+Multi-Level Dijkstra (CRP)              C++     https://github.com/michaelwegner/CRP
+Multi-Level Dijkstra                    C++     https://github.com/Project-OSRM/osrm-backend
+Multi-Level Dijkstra (SARA)             Java    https://github.com/cc-routing/routing-sara
+Pruned Highway Labelling                C       https://github.com/kawatea/pruned-highway-labeling
+Pruned Landmark Labelling               C++     https://github.com/iwiwi/pruned-landmark-labeling
+ALT                                     Java    https://github.com/graphhopper/graphhopper
+ALT                                     Java    https://github.com/jgrapht/jgrapht
+ALT                                     Python  https://github.com/ryanpon/pathfinding-animator
+Contraction Hierarchies                 Java    https://github.com/graphhopper/graphhopper
+Contraction Hierarchies                 Java    https://github.com/michaeltandy/contraction-hierarchies
+Contraction Hierarchies                 Java    https://github.com/navjindervirdee/Advanced-Shortest-Paths-Algorithms
+Contraction Hierarchies                 JS      https://www.mjt.me.uk/posts/contraction-hierarchies/
+Contraction Hierarchies                 JS      https://github.com/royhobbstn/contraction-hierarchy-js
+Contraction Hierarchies                 C++     http://algo2.iti.kit.edu/source/contraction-hierarchies-20090221.tgz
+Contraction Hierarchies                 C++     https://code.google.com/archive/p/monav/source/default/source
+Contraction Hierarchies                 C++     https://github.com/Project-OSRM/osrm-backend
+Contraction Hierarchies                 Java    https://github.com/cc-routing/routing
+Contraction Hierarchies                 C#      https://github.com/itinero/routing
+Contraction Hierarchies                 Rust    https://github.com/easbar/fast_paths
+Contraction Hierarchies                 Go      https://github.com/LdDl/ch
+Contraction Hierarchies                 Go      https://github.com/nfleet/via
+Contraction Hierarchies                 C++     https://github.com/vlarmet/cppRouting
+Weak Contraction Hierarchies            C++     https://github.com/tim3z/weakch
+Customisable Contraction Hierarchies    C++     https://github.com/RoutingKit/RoutingKit
+Time-Dependent Contraction Hierarchies  C++     https://github.com/GVeitBatz/KaTCH
+Highways Hierarchies                    Java    https://github.com/biafra23/mapsforge/tree/master/src/org/mapsforge/android/routing/blockedHighwayHierarchies
+PHAST                                   C++     https://github.com/vlarmet/cppRouting
+
