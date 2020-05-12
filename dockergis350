@@ -316,6 +316,20 @@ RUN apt-get update && \
     libboost-all-dev \
     libboost-dev \
     osm2pgrouting \
-    libboost-regex-dev
+    libboost-regex-dev \
+    libicu-dev \
+    python-dev libxml2 libxml2-dev \
+    libfreetype6 libfreetype6-dev \
+    libharfbuzz-dev \
+    libjpeg-dev \
+    libpng-dev \
+    libproj-dev \
+    libtiff-dev \
+    libcairo2-dev python-cairo-dev \
+    libcairomm-1.0-dev \
+    ttf-unifont ttf-dejavu ttf-dejavu-core ttf-dejavu-extra \
+    git build-essential python-nose \
+    libgdal-dev python-gdal \
+    libsqlite3-dev
     
 USER jovyan
